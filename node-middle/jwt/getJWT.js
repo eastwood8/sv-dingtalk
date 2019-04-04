@@ -17,18 +17,21 @@ async function getJWT(dingUserId) {
     if (!dingUserId) return new ResponseJSON(null, 400, '无效的DINGUSERID');
 
     try {
-        const baseUrl = 'http://dm.cwewater.com:7000/openid-connect-server-webapp/getDingToken';
+        const baseUrl = 'http://192.168.112.61:7000/openid-connect-server-webapp/getDingToken';
         const requestData = {
-            method: 'get',
+            method: 'GET',
             url: `${baseUrl}/${dingUserId}`
         };
+        console.log(`[getJWT] url: ${requestData.url}`);
         const { data: jwtoken } = await axios(requestData);
 
         if (!(jwtoken + '').trim()) return new ResponseJSON(null, 404, 'Not Found');
 
         return new ResponseJSON(jwtoken);
     } catch (error) {
+        // console.log(error);
         const { status: __status, statusText: __statusText } = error.response;
+
 
         return new ResponseJSON(null, __status, __statusText);
     }
